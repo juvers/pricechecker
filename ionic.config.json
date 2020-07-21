@@ -1,7 +1,8 @@
 {
   "name": "pricechecker",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }
