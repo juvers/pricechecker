@@ -28,4 +28,40 @@ export class HomePage {
      });
   }
 
+   checkManually() {
+    this.matchProduct(this.productnumber);
+  }
+
+   matchProduct(productnumber: string) {
+    this.sqlite.create({
+      name: 'pricechecker.db',
+      location: 'default'
+    }).then((db: SQLiteObject) => {
+      db.executeSql('SELECT * FROM product WHERE plu = ? OR barcode = ?', [productnumber, productnumber])
+      .then(res => {
+        if (res.rows.length > 0) {
+          console.log(res.rows.item);
+          console.log(res.rows.item(0));
+          this.plu = res.rows.item(0).plu;
+          this.barcode = res.rows.item(0).barcode;
+          this.name = res.rows.item(0).prodname;
+          this.description = res.rows.item(0).proddesc;
+          this.price = res.rows.item(0).price;
+        } else {
+          console.log('product not found!');
+        }
+      })
+      .catch(e => console.log(e));
+    }).catch(e => console.log(e));
+  }
+
+   clearForm() {
+    this.plu = '';
+    this.barcode = '';
+    this.name = '';
+    this.description = '';
+    this.price = null;
+    this.productnumber = '';
+  }
+
 }
